@@ -67,22 +67,22 @@ public class DataMgr
 	}
 	
 	//注册
-	public bool Register(string id, string pw)
+	public bool Register(string account, string pw)
 	{
 		//防sql注入
-		if (!IsSafeStr (id) || !IsSafeStr (pw)) 
+		if (!IsSafeStr (account) || !IsSafeStr (pw)) 
 		{
 			Console.WriteLine("[DataMgr]Register 使用非法字符");
 			return false;
 		}
 		//能否注册
-		if (!CanRegister(id)) 
+		if (!CanRegister(account)) 
 		{
 			Console.WriteLine("[DataMgr]Register !CanRegister");
 			return false;
 		}
 		//写入数据库User表
-		string cmdStr = string.Format("insert into user set id ='{0}' ,pw ='{1}';", id, pw);
+		string cmdStr = string.Format("insert into user set account ='{0}' ,pw ='{1}';", account, pw);
 		MySqlCommand cmd = new MySqlCommand(cmdStr, sqlConn);
 		try
 		{
