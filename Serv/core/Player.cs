@@ -4,15 +4,15 @@ using System;
 public class Player
 {
 	//id、连接、玩家数据
-	public string id;
+	public string account;
 	public Conn conn;
 	public PlayerData data;
 	public PlayerTempData tempData;
 
 	//构造函数，给id和conn赋值
-	public Player(string id, Conn conn)
+	public Player(string account, Conn conn)
 	{
-		this.id = id;
+		this.account = account;
 		this.conn = conn;
 		tempData = new PlayerTempData();
 	}
@@ -26,7 +26,7 @@ public class Player
 	}
 	
 	//踢下线
-	public static bool KickOff(string id, ProtocolBase proto)
+	public static bool KickOff(string account, ProtocolBase proto)
 	{
 		Conn[] conns = ServNet.instance.conns;
 		for (int i = 0; i < conns.Length; i++)
@@ -37,7 +37,7 @@ public class Player
 				continue;
 			if (conns[i].player == null)
 				continue;
-			if (conns[i].player.id == id)
+			if (conns[i].player.account == account)
 			{
 				lock (conns[i].player)
 				{

@@ -44,13 +44,13 @@ public class DataMgr
 	}
 
 	//是否存在该用户
-	private bool CanRegister(string id)
+	private bool CanRegister(string account)
 	{
 		//防sql注入
-		if (!IsSafeStr(id))
+		if (!IsSafeStr(account))
 			return false;
 		//查询id是否存在
-		string cmdStr = string.Format("select * from user where id='{0}';", id);  
+		string cmdStr = string.Format("select * from user where account='{0}';", account);  
 		MySqlCommand cmd = new MySqlCommand (cmdStr, sqlConn);  
 		try 
 		{
@@ -134,13 +134,13 @@ public class DataMgr
 	}
 
 	//检测用户名密码
-	public bool CheckPassWord(string id, string pw)
+	public bool CheckPassWord(string account, string pw)
 	{
 		//防sql注入
-		if (!IsSafeStr (id)||!IsSafeStr (pw))
+		if (!IsSafeStr (account)||!IsSafeStr (pw))
 			return false;
 		//查询
-		string cmdStr = string.Format("select * from user where id='{0}' and pw='{1}';", id, pw);  
+		string cmdStr = string.Format("select * from user where account='{0}' and pw='{1}';", account, pw);  
 		MySqlCommand cmd = new MySqlCommand (cmdStr, sqlConn);  
 		try 
 		{
@@ -157,14 +157,14 @@ public class DataMgr
 	}
 
 	//获取玩家数据
-	public PlayerData GetPlayerData(string id)
+	public PlayerData GetPlayerData(string account)
 	{
 		PlayerData playerData = null;
 		//防sql注入
-		if (!IsSafeStr(id))
+		if (!IsSafeStr(account))
 			return playerData;
 		//查询
-		string cmdStr = string.Format("select * from player where id ='{0}';", id);
+		string cmdStr = string.Format("select * from player where account ='{0}';", account);
 		MySqlCommand cmd = new MySqlCommand (cmdStr, sqlConn); 
 		byte[] buffer;
 		try
@@ -177,9 +177,9 @@ public class DataMgr
 			}
 			dataReader.Read();
 			
-			long len = dataReader.GetBytes(1, 0, null, 0, 0);//1是data  
+			long len = dataReader.GetBytes(2, 0, null, 0, 0);//1是data  
 			buffer = new byte[len];  
-			dataReader.GetBytes(1, 0, buffer, 0, (int)len);
+			dataReader.GetBytes(2, 0, buffer, 0, (int)len);
 			dataReader.Close();
 		}
 		catch(Exception e)
@@ -206,7 +206,7 @@ public class DataMgr
 	//保存角色
 	public bool SavePlayer(Player player)
 	{
-		string id = player.id;
+		string account = player.account;
 		PlayerData playerData = player.data;
 		//序列化
 		IFormatter formatter = new BinaryFormatter ();
@@ -222,8 +222,8 @@ public class DataMgr
 		}
 		byte[] byteArr = stream.ToArray();
 		//写入数据库
-		string formatStr = "update player set data =@data where id = '{0}';";
-			string cmdStr = string.Format (formatStr , player.id);
+		string formatStr = "update player set data =@data where account = '{0}';";
+			string cmdStr = string.Format (formatStr , player.account);
 		MySqlCommand cmd = new MySqlCommand (cmdStr, sqlConn);
 		cmd.Parameters.Add ("@data", MySqlDbType.Blob);
 		cmd.Parameters[0].Value = byteArr;

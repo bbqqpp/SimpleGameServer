@@ -11,7 +11,7 @@ public partial class HandlePlayerMsg
 		protocolRet.AddString ("GetScore");
 		protocolRet.AddInt (player.data.score);
 		player.Send (protocolRet);
-		Console.WriteLine ("MsgGetScore " + player.id + player.data.score);
+		Console.WriteLine ("MsgGetScore " + player.account + player.data.score);
 	}
 
 	//增加分数
@@ -24,6 +24,6 @@ public partial class HandlePlayerMsg
 		string protoName = protocol.GetString (start, ref start);
 		//处理
 		player.data.score += 1;
-		Console.WriteLine ("MsgAddScore " + player.id + " " + player.data.score.ToString ());
+		Console.WriteLine ("MsgAddScore " + player.account + " " + player.data.score.ToString ());
 	}
 }

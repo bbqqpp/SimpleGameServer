@@ -215,7 +215,7 @@ public class ServNet
 				return;
 			}
 			Object[] obj = new object[]{conn.player,protoBase};
-			Console.WriteLine ("[处理玩家消息]" + conn.player.id + " :" + name);
+			Console.WriteLine ("[处理玩家消息]" + conn.player.account + " :" + name);
 			mm.Invoke (handlePlayerMsg, obj);
 		}
 	}
@@ -291,7 +291,7 @@ public class ServNet
 			
 			string str = "连接[" + conns[i].GetAdress() + "] ";
 			if(conns[i].player != null)
-				str += "玩家id " + conns[i].player.id;
+				str += "玩家id " + conns[i].player.account;
 			
 			Console.WriteLine(str);
 		}
